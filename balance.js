@@ -66,7 +66,7 @@ for (const teamMember of selectedTeam.slice(0, half)) {
   }
   console.log(`Total: ${teamMember.map(player => player.elo).reduce((total, elo) => total + elo)}`);
   console.log('VS');
-  const otherPlayer = players.filter(player => !teamMember.includes(player)).sort(udiffCompare);
+  const otherPlayer = players.filter(player => !teamMember.includes(player));
   for (const player of otherPlayer) {
     console.log(`${player.name} (Elo: ${player.elo})`);
   }
