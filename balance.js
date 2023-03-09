@@ -25,8 +25,7 @@ function getCombinations(array, n) {
   return combinations;
 }
 
-function compareByEloSum(a, b) {
-  const balanceElo = this.balanceElo;
+function compareByEloSum(balanceElo, a, b) {
   const aSum = Math.abs(a.map(player => player.elo).reduce((total, elo) => total + elo) - balanceElo);
   const bSum = Math.abs(b.map(player => player.elo).reduce((total, elo) => total + elo) - balanceElo);
   return aSum > bSum ? 1 : -1;
@@ -34,10 +33,6 @@ function compareByEloSum(a, b) {
 
 function filterByEloSum(array, targetSum) {
   return array.filter(element => element.map(player => player.elo).reduce((total, elo) => total + elo) === targetSum);
-}
-
-function udiffCompare(a, b) {
-  return a.name.localeCompare(b.name);
 }
 
 //example usage
@@ -58,7 +53,7 @@ const combinationPlayers = getCombinations(players, 4);
 // Get the balance number
 const totalElo = players.map(player => player.elo).reduce((total, elo) => total + elo);
 const balanceElo = Math.ceil(totalElo / 2);
-combinationPlayers.sort(compareByEloSum.bind({ balanceElo }));
+combinationPlayers.sort((a, b) => compareByEloSum(balanceElo, a, b));
 const targetElo = combinationPlayers[0].map(player => player.elo).reduce((total, elo) => total + elo);
 const selectedTeam = filterByEloSum(combinationPlayers, targetElo);
 

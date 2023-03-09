@@ -26,11 +26,10 @@ function getCombinations($array, $n) {
     return $combinations;
 }
 
-function compareByEloSum($a, $b) {
-    global $balance_elo;
+function compareByEloSum($a, $b, $balance_elo) {
     $a_sum = abs(array_sum(array_column($a, 'elo')) - $balance_elo);
     $b_sum = abs(array_sum(array_column($b, 'elo')) - $balance_elo);
-    return $a_sum > $b_sum?1:-1;
+    return $a_sum > $b_sum ? 1 : -1;
 }
 
 function filterByEloSum($array, $target_sum) {
@@ -62,7 +61,9 @@ $combinationPlayers = getCombinations($players, 4);
 // Get the balance number
 $total_elo = array_sum(array_column($players, 'elo'));
 $balance_elo = ceil($total_elo/2);
-usort($combinationPlayers,'compareByEloSum');
+usort($combinationPlayers, function($a, $b) use ($balance_elo) {
+    return compareByEloSum($a, $b, $balance_elo);
+});
 $target_elo = array_sum(array_column($combinationPlayers[0], 'elo'));
 $selected_team = filterByEloSum($combinationPlayers, $target_elo);
 
